@@ -1,9 +1,12 @@
 use axum::response::{Html, IntoResponse, Response};
 use maud::{html, Markup};
 
+const TAILWINDCSS_ROUTE: &str = "/public/styles/twout.css";
+
 pub struct Layout {
     pub title: String,
     pub description: String,
+    pub styles: Vec<Markup>,
 }
 
 impl Layout {
@@ -15,6 +18,10 @@ impl Layout {
                 }
 
                 meta name="description" content=(self.description) {}
+
+                @for style in &self.styles {
+                    (*style)
+                }
 
                 div {
                     (template)
@@ -33,6 +40,7 @@ impl Layout {
 pub struct LayoutBuilder {
     pub title: String,
     pub description: String,
+    pub styles: Vec<Markup>,
 }
 
 impl LayoutBuilder {
@@ -40,6 +48,7 @@ impl LayoutBuilder {
         Self {
             title: "Soup.rs".into(),
             description: "Registry for distribution of app templates".into(),
+            styles: Vec::new(),
         }
     }
 
@@ -55,10 +64,23 @@ impl LayoutBuilder {
         self
     }
 
-    pub fn build(self) -> Layout {
+    /// No tailwindcss
+    pub fn tailwindcss(&mut self) -> &mut Self {
+        self.link_style(TAILWINDCSS_ROUTE.into())
+    }
+
+    /// Add new linked style
+    pub fn link_style(&mut self, stylesheet: String) -> &mut Self {
+        self.styles
+            .push(html! { link href=(stylesheet) rel="stylesheet"; });
+        self
+    }
+
+    pub fn build(&mut self) -> Layout {
         Layout {
-            title: self.title,
-            description: self.description,
+            title: self.title.clone(),
+            description: self.description.clone(),
+            styles: self.styles.clone(),
         }
     }
 }

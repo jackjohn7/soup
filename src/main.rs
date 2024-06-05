@@ -1,6 +1,5 @@
 use anyhow::Context;
-use axum::{response::IntoResponse, routing::get, Router};
-use hypertext::rsx;
+use axum::{routing::get, Router};
 use std::sync::Arc;
 use tower_http::services::ServeDir;
 

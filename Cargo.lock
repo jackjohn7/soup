@@ -1189,15 +1189,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "html-escape"
-version = "0.2.13"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6d1ad449764d627e22bfd7cd5e8868264fc9236e07c752972b4080cd351cb476"
-dependencies = [
- "utf8-width",
-]
-
-[[package]]
 name = "http"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1347,34 +1338,6 @@ dependencies = [
  "hyper 1.3.1",
  "pin-project-lite",
  "tokio",
-]
-
-[[package]]
-name = "hypertext"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0fcd5f614cfb5ad8790b824731abb908d4095f38fd8ecc4be22f5882e2384708"
-dependencies = [
- "axum-core",
- "html-escape",
- "http 1.1.0",
- "hypertext-macros",
- "itoa",
- "ryu",
-]
-
-[[package]]
-name = "hypertext-macros"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d67adf090cdec25465a75c0c2941a5d3ecd02442fa05e604f0c9d26426f0eed"
-dependencies = [
- "html-escape",
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "rstml",
- "syn 2.0.66",
 ]
 
 [[package]]
@@ -2102,18 +2065,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "proc-macro2-diagnostics"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af066a9c399a26e020ada66a034357a868728e72cd426f3adcd35f80d88d88c8"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.66",
- "version_check",
-]
-
-[[package]]
 name = "psl-types"
 version = "2.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2489,20 +2440,6 @@ dependencies = [
  "heapless",
  "num-traits",
  "smallvec",
-]
-
-[[package]]
-name = "rstml"
-version = "0.11.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe542870b8f59dd45ad11d382e5339c9a1047cde059be136a7016095bbdefa77"
-dependencies = [
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "syn 2.0.66",
- "syn_derive",
- "thiserror",
 ]
 
 [[package]]
@@ -2892,7 +2829,6 @@ dependencies = [
  "anyhow",
  "axum",
  "bowl_core",
- "hypertext",
  "maud",
  "serde",
  "surrealdb",
@@ -3648,12 +3584,6 @@ name = "utf-8"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09cc8ee72d2a9becf2f2febe0205bbed8fc6615b7cb429ad062dc7b7ddd036a9"
-
-[[package]]
-name = "utf8-width"
-version = "0.1.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86bd8d4e895da8537e5315b8254664e6b769c4ff3db18321b297a1e7004392e3"
 
 [[package]]
 name = "uuid"
