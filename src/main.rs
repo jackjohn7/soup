@@ -8,7 +8,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 pub mod components;
 pub mod routes;
-use routes::general;
+use routes::{general, packages};
 
 struct AppState {}
 
@@ -31,6 +31,7 @@ async fn main() -> anyhow::Result<()> {
 
     let app = Router::new()
         .route("/", get(general::index))
+        .route("/packages", get(packages::get))
         //.with_state(app_state)
         .nest_service(
             "/public/styles",
