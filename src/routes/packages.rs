@@ -14,6 +14,9 @@ pub async fn get(headers: HeaderMap) -> Result<Response, StatusCode> {
     // TODO: Use query parameters to search (q, sort)
     match headers.get(ACCEPT).map(|x| x.to_str().unwrap()) {
         Some(x) if x.contains("text/html") => {
+            // TODO: Need to match on whether or not the htmx header is set
+            // If it isn't we need to return the entire page. Otherwise, a partial could be fine
+            debug!("wants html");
             Ok(Layout::builder().tailwindcss().build().render(html! {
             h1 { "Soup.rs Packages" }
             }))

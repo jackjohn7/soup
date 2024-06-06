@@ -28,9 +28,9 @@ impl Layout {
                     integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
                     crossorigin="anonymous" {}
 
-                div #root {
-                    (template)
-                }
+            }
+            body hx-boost="true" #root {
+                (template)
             }
         }
         .into_string();
