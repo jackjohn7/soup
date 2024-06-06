@@ -1,21 +1,30 @@
+use std::sync::Arc;
+
 use axum::{
-    http::{header::ACCEPT, HeaderMap, StatusCode},
+    extract::{Request, State},
+    http::{header::ACCEPT, StatusCode},
     response::{IntoResponse, Response},
 };
 use maud::html;
 use tracing::debug;
 
-use crate::components::layout::Layout;
+use crate::{components::layout::Layout, AppState};
 
+struct _GetQuery {
+    q: String,
+    sort: String,
+}
 /// GET /packages
-pub async fn get(headers: HeaderMap) -> Result<Response, StatusCode> {
+pub async fn get(State(_): State<Arc<AppState>>, req: Request) -> Result<Response, StatusCode> {
     debug!("hit the packages route");
 
     // TODO: Use query parameters to search (q, sort)
-    match headers.get(ACCEPT).map(|x| x.to_str().unwrap()) {
+    // Deserialize them into `GetQuery` struct
+    match req.headers().get(ACCEPT).map(|x| x.to_str().unwrap()) {
         Some(x) if x.contains("text/html") => {
             // TODO: Need to match on whether or not the htmx header is set
             // If it isn't we need to return the entire page. Otherwise, a partial could be fine
+            // Realistically, this should be my approach for all routes
             debug!("wants html");
             Ok(Layout::builder().tailwindcss().build().render(html! {
             h1 { "Soup.rs Packages" }

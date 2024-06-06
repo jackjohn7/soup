@@ -10,7 +10,8 @@ pub mod components;
 pub mod routes;
 use routes::{general, packages};
 
-struct AppState {}
+// TODO: Move state into separate module
+pub struct AppState {}
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -27,12 +28,12 @@ async fn main() -> anyhow::Result<()> {
 
     // TODO: connect to database
 
-    let _app_state = Arc::new(AppState {});
+    let app_state = Arc::new(AppState {});
 
     let app = Router::new()
         .route("/", get(general::index))
         .route("/packages", get(packages::get))
-        //.with_state(app_state)
+        .with_state(app_state)
         .nest_service(
             "/public/styles",
             ServeDir::new(format!(
