@@ -30,8 +30,14 @@ impl Layout {
 
             }
             body hx-boost="true" #root {
-                (template)
-            }
+
+                div #navbar {
+                    a href="/" ."text-4xl font-bold" { "Soup.rs" }
+                    
+                }
+
+                div {(template)}
+                }
         }
         .into_string();
         Html(with_layout).into_response()

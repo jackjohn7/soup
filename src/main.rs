@@ -1,5 +1,8 @@
 use anyhow::Context;
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, post},
+    Router,
+};
 use std::sync::Arc;
 use tower_http::services::ServeDir;
 
@@ -33,6 +36,7 @@ async fn main() -> anyhow::Result<()> {
     let app = Router::new()
         .route("/", get(general::index))
         .route("/packages", get(packages::get))
+        .route("/packages", post(packages::post))
         .with_state(app_state)
         .nest_service(
             "/public/styles",

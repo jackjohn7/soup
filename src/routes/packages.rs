@@ -38,3 +38,10 @@ pub async fn get(State(_): State<Arc<AppState>>, req: Request) -> Result<Respons
         _ => Err(StatusCode::BAD_REQUEST),
     }
 }
+
+/// POST /packages
+///
+/// This route allows a user to publish a package
+pub async fn post(State(_): State<Arc<AppState>>) -> Result<Response, StatusCode> {
+    Err(StatusCode::NOT_IMPLEMENTED)
+}
