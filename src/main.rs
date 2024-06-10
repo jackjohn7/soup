@@ -12,13 +12,14 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 pub mod components;
 pub mod config;
+pub mod errors;
 pub mod routes;
 use config::Env;
 use routes::{general, packages};
 
 // TODO: Move state into separate module
 pub struct AppState {
-    env: Env,
+    pub env: Env,
 }
 
 #[tokio::main]
@@ -39,7 +40,6 @@ async fn main() -> anyhow::Result<()> {
 
     info!("Reading environment variables");
     let env = envy::from_env::<Env>()?;
-    dbg!(&env);
 
     // TODO: connect to database
 

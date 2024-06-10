@@ -2,20 +2,20 @@ use std::sync::Arc;
 
 use axum::{
     extract::{Request, State},
-    http::{header::ACCEPT, StatusCode},
+    http::header::ACCEPT,
     response::{IntoResponse, Response},
 };
 use maud::html;
 use tracing::debug;
 
-use crate::{components::layout::Layout, AppState};
+use crate::{components::layout::Layout, errors::SoupError, AppState};
 
 struct _GetQuery {
     q: String,
     sort: String,
 }
 /// GET /packages
-pub async fn get(State(_): State<Arc<AppState>>, req: Request) -> Result<Response, StatusCode> {
+pub async fn get(State(_): State<Arc<AppState>>, req: Request) -> Result<Response, SoupError> {
     debug!("hit the packages route");
 
     // TODO: Use query parameters to search (q, sort)
@@ -25,23 +25,28 @@ pub async fn get(State(_): State<Arc<AppState>>, req: Request) -> Result<Respons
             // TODO: Need to match on whether or not the htmx header is set
             // If it isn't we need to return the entire page. Otherwise, a partial could be fine
             // Realistically, this should be my approach for all routes
-            debug!("wants html");
             Ok(Layout::builder().tailwindcss().build().render(html! {
             h1 { "Soup.rs Packages" }
             }))
         }
         // TODO: display same thing as html but with plain-text for curl search
-        Some(x) if x.contains("text/plain") => Ok(String::from("Soup.rs Packages").into_response()),
+        Some(x) if x.contains("text/plain") || x.contains("*/*") => {
+            Ok(String::from("Soup.rs Packages").into_response())
+        }
         Some(x) if x.contains("application/json") => {
             Ok(String::from("{\"packages\": []}").into_response())
         }
-        _ => Err(StatusCode::BAD_REQUEST),
+        Some(e) => Err(SoupError::InvalidHeader {
+            expected: "text/html | text/plain | application/json | */*",
+            found: e.into(),
+        }),
+        None => Err(SoupError::MissingHeader("ACCEPT")),
     }
 }
 
 /// POST /packages
 ///
 /// This route allows a user to publish a package
-pub async fn post(State(_): State<Arc<AppState>>) -> Result<Response, StatusCode> {
-    Err(StatusCode::NOT_IMPLEMENTED)
+pub async fn post(State(_): State<Arc<AppState>>) -> Result<Response, SoupError> {
+    Err(SoupError::NotImplemented)
 }

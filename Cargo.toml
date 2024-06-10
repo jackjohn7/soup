@@ -19,3 +19,4 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 bowl_core = { git="https://github.com/jackjohn7/bowl_core.git", tag="0.1.0" }
 envy = "0.4.2"
 dotenv = "0.15.0"
+thiserror = "1.0.61"
