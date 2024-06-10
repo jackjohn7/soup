@@ -3,6 +3,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use dotenv::dotenv;
 use std::sync::Arc;
 use tower_http::services::ServeDir;
 
@@ -10,11 +11,15 @@ use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 pub mod components;
+pub mod config;
 pub mod routes;
+use config::Env;
 use routes::{general, packages};
 
 // TODO: Move state into separate module
-pub struct AppState {}
+pub struct AppState {
+    env: Env,
+}
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -29,9 +34,16 @@ async fn main() -> anyhow::Result<()> {
 
     info!("Initializing Soup Registry");
 
+    info!("Load .env file into environment");
+    dotenv()?;
+
+    info!("Reading environment variables");
+    let env = envy::from_env::<Env>()?;
+    dbg!(&env);
+
     // TODO: connect to database
 
-    let app_state = Arc::new(AppState {});
+    let app_state = Arc::new(AppState { env });
 
     let app = Router::new()
         .route("/", get(general::index))

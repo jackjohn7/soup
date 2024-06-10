@@ -1,3 +1,4 @@
 /target
 node_modules
 public/styles/twout.css
+.env
