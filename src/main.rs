@@ -14,8 +14,9 @@ pub mod components;
 pub mod config;
 pub mod errors;
 pub mod routes;
+pub mod server;
 use config::Env;
-use routes::{general, packages};
+use server::application::App;
 
 // TODO: Move state into separate module
 pub struct AppState {
@@ -45,20 +46,7 @@ async fn main() -> anyhow::Result<()> {
 
     let app_state = Arc::new(AppState { env });
 
-    let app = Router::new()
-        .route("/", get(general::index))
-        .route("/packages", get(packages::get))
-        .route("/packages", post(packages::post))
-        .with_state(app_state)
-        .nest_service(
-            "/public/styles",
-            ServeDir::new(format!(
-                "{}/public/styles",
-                std::env::current_dir()?
-                    .to_str()
-                    .context("couldn't find cwd")?
-            )),
-        );
+    let app = App::new(app_state).router().await?;
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:5173").await?;
     axum::serve(listener, app.into_make_service()).await?;
