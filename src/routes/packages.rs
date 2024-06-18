@@ -1,10 +1,13 @@
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use axum::{
     extract::{Request, State},
     http::header::ACCEPT,
     response::{IntoResponse, Response},
+    Json,
 };
+use bowl_core::config::Config;
 use maud::html;
 use tracing::debug;
 
@@ -44,9 +47,19 @@ pub async fn get(State(_): State<Arc<AppState>>, req: Request) -> Result<Respons
     }
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct Package {
+    config: Config,
+    readme: String,
+    data: Vec<u8>,
+}
+
 /// POST /packages
 ///
 /// This route allows a user to publish a package
-pub async fn post(State(_): State<Arc<AppState>>) -> Result<Response, SoupError> {
+pub async fn post(
+    State(_): State<Arc<AppState>>,
+    Json(_body): Json<Package>,
+) -> Result<Response, SoupError> {
     Err(SoupError::NotImplemented)
 }

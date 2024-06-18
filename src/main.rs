@@ -1,11 +1,5 @@
-use anyhow::Context;
-use axum::{
-    routing::{get, post},
-    Router,
-};
 use dotenv::dotenv;
 use std::sync::Arc;
-use tower_http::services::ServeDir;
 
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
